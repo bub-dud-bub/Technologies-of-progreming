@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 def player_guess(goal, inp, _try):
     form = sg.FlexForm('Simple data entry form')
     layout = [
-          [sg.Text("Задумано четырёхзначное число:"+str(goal), size=(30, 1))],
+          [sg.Text("Задумано четырёхзначное число:"+str(goal), size=(40, 1))],
           [sg.Text("Угадай число:", size=(10, 1)), sg.InputText('', key='inp')],
           [sg.Submit("Ок"), sg.Submit("Главное меню")]
          ]
@@ -13,6 +13,12 @@ def player_guess(goal, inp, _try):
         cow, bull = 0, 0
         inp = str(inp)
         goal = str(goal)
+        for i in range(0, 3):
+            for n in range(i+1, 4):
+                if (inp[i]==inp[n]):
+                    layout.append([sg.Text("Cifri chisla ne dolzhny povtoryatsya", size=(30, 1))])
+                    break
+            if len(layout)==4: break 
         for i in range(0, 4):
             for n in range(0, 4):
                 if (inp[i]==goal[n]):
@@ -20,8 +26,9 @@ def player_guess(goal, inp, _try):
                         bull+=1
                     else:
                         cow+=1
-        layout.append([sg.Text("Коровы - "+str(cow)+", Быки - "+str(bull), size=(30, 1))])
-        _try+=1
+        if len(layout)==3:          
+            layout.append([sg.Text("Коровы - "+str(cow)+", Быки - "+str(bull), size=(30, 1))])
+            _try+=1
     else:
         layout.append([sg.Text("Число надо четырёхзначное", size=(30, 1))])
 
@@ -42,19 +49,19 @@ def player_guess(goal, inp, _try):
             return 0
     player_guess(goal, int(values['inp']), _try)
 
-def machine_guess(inp, cow, bull, _try, all_dig, true_dig):
-    inp = str(inp)
-    if bull == 4:
-        victory(_try)
-    elif cow == 4:
-        for i in range (0, 4):
-            true_dig.[i] = str(inp[i])
-    elif (cow==0 and bull==0):
-        for i in range (0, 4):
-            all_dig.remove(str(inp[i]))
-    else:
+# def machine_guess(inp, cow, bull, _try, all_dig, true_dig):
+#     inp = str(inp)
+#     if bull == 4:
+#         victory(_try)
+#     elif cow == 4:
+#         for i in range (0, 4):
+#             true_dig.[i] = str(inp[i])
+#     elif (cow==0 and bull==0):
+#         for i in range (0, 4):
+#             all_dig.remove(str(inp[i]))
+#     else:
         
-        machine_input(1000*int(inp[0]) + 100*int(inp[1]) + 10*inp[2] + )
+#         machine_input(1000*int(inp[0]) + 100*int(inp[1]) + 10*inp[2] + )
 
 
 def victory(_try):
