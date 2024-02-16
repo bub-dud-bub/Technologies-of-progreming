@@ -56,67 +56,77 @@ def player_guess(goal, inp, _try):
 
 
 def machine_think(inp, _try, cow, bull, all_dig):
+    new = []
     if bull == 4:
         victory(_try)
     elif (cow==0 and bull==0):
         for t in all_dig:
+            save = True
             for i in range (0, 4):
                 for n in range (0, 4):
-                    t = str(t)
-                    if t[i]==inp[n]:
-                        all_dig.remove(t)
+                    tdd = str(t)
+                    if tdd[i]==inp[n]:
+                        save = False
+            if save==False:
+                pass
+            else:
+                new.append(t)
+        print(inp)
     elif (cow==4):
         for t in all_dig:
+            c = 0
             for i in range (0, 4):
-                n = 0
-                while n < 4:
-                    if str(t[i])==inp[n]:
+                for n in range(0, 4):
+                    tdd = str(t)
+                    if tdd[i]==inp[n]:
+                        c+=1
                         break
-                    n+=1
-                if n==4:
-                    all_dig.remove(t)
-                    break
+            if c==4:
+                new.append(t)
     else:
         for t in all_dig:
             save = False
             for i in range (0, 4):
                 for n in range (0, 4):
-                    t = str(t)
-                    if (t[i]==inp[n]):
+                    tdd = str(t)
+                    if (tdd[i]==inp[n]):
                         save = True
-            if save == False:
-                all_dig.remove(int(t))
+            if save == True:
+                new.append(t)
+    if (bull>0 and bull<4):
+        all_dig = new
+        new = []
     if (bull==1):
-        for t in all_dig:
-            i = 0
-            while i < 4:
-                t = str(t)
-                if (t[i]==inp[i]):
-                    break
-                i+=1
-            if (i==4):
-                all_dig.remove(int(t))
+        for tdd in all_dig:
+            save=False
+            for i in range(0,4):
+                tdd = str(t)
+                if (tdd[i]==inp[i]):
+                    save==True
+            if save==True:
+                new.append(t)
     elif (bull==2):
         for t in all_dig:
             save = False
             for i in range(0,3):
                 for n in range (i+1, 4):
-                    t = str(t)
-                    if (t[i]==inp[i] and t[n]==inp[n]):
+                    tdd = str(t)
+                    if (tdd[i]==inp[i] and tdd[n]==inp[n]):
                         save = True
-        if save == False:
-                all_dig.remove(int(t))    
+        if save == True:
+                new.append(t)
     elif (bull==3):
         for t in all_dig:
-            t = str(t)
-            if (t[0]==inp[0] and t[1]==inp[1] and t[2]==inp[2]) or (t[0]==inp[0] and t[1]==inp[1] and t[3]==inp[3]) or (t[0]==inp[0] and t[2]==inp[2] and t[3]==inp[3]) or (t[1]==inp[1] and t[2]==inp[2] and t[3]==inp[3]):
-                pass
-            else:
-                all_dig.remove(int(t))
-                
-    index = random.randint(0, len(all_dig))
+            tdd = str(t)
+            if (tdd[0]==inp[0] and tdd[1]==inp[1] and tdd[2]==inp[2]) or (tdd[0]==inp[0] and tdd[1]==inp[1] and tdd[3]==inp[3]) or (tdd[0]==inp[0] and tdd[2]==inp[2] and tdd[3]==inp[3]) or (tdd[1]==inp[1] and tdd[2]==inp[2] and tdd[3]==inp[3]):
+                new.append(t)
+    if len(new)==0:
+        new = all_dig
+    if int(inp) in new:
+        new.remove(int(inp))
+    inex = random.randint(0, len(new)-1)
     _try+=1
-    machine_guess(all_dig[index], _try, all_dig)
+    machine_guess(new[inex], _try, new)
 
 def victory(_try):
     form = sg.FlexForm('Simple data entry form')
@@ -141,8 +151,9 @@ def machine_guess(inp, _try, all_dig):
     form = sg.FlexForm('Simple data entry form')
     layout = [
           [sg.Text("Программа предложила число: "+str(inp), size=(50, 1))],
-          [sg.Text("Введите число коров:", size=(30, 1)), sg.InputText('', key='cow')],
           [sg.Text("Введите число быков:", size=(30, 1)), sg.InputText('', key='bull')],
+          [sg.Text("Введите число коров:", size=(30, 1)), sg.InputText('', key='cow')],
+          [sg.Text(str(len(all_dig)))],
           [sg.Submit("Ок"), sg.Submit("Главное меню")]
          ]
     window = sg.Window("Demo", layout)
@@ -189,8 +200,8 @@ while True:
                 break
             if event == "Начать игру":
                 window.close()
-                index = random.randint(0, len(all_dig))
-                machine_guess(all_dig[index], 1, all_dig)
+                inex = random.randint(0, len(all_dig))
+                machine_guess(4321, 1, all_dig)
                 break
             if event == "Главное меню":
                 window.close()
