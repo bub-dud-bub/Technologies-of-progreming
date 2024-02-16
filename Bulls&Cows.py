@@ -86,7 +86,35 @@ def machine_think(inp, _try, cow, bull, all_dig):
                         save = True
             if save == False:
                 all_dig.remove(int(t))
-    inex = random.randint(0, len(all_dig))
+    if (bull==1):
+        for t in all_dig:
+            i = 0
+            while i < 4:
+                t = str(t)
+                if (t[i]==inp[i]):
+                    break
+                i+=1
+            if (i==4):
+                all_dig.remove(int(t))
+    elif (bull==2):
+        for t in all_dig:
+            save = False
+            for i in range(0,3):
+                for n in range (i+1, 4):
+                    t = str(t)
+                    if (t[i]==inp[i] and t[n]==inp[n]):
+                        save = True
+        if save == False:
+                all_dig.remove(int(t))    
+    elif (bull==3):
+        for t in all_dig:
+            t = str(t)
+            if (t[0]==inp[0] and t[1]==inp[1] and t[2]==inp[2]) or (t[0]==inp[0] and t[1]==inp[1] and t[3]==inp[3]) or (t[0]==inp[0] and t[2]==inp[2] and t[3]==inp[3]) or (t[1]==inp[1] and t[2]==inp[2] and t[3]==inp[3]):
+                pass
+            else:
+                all_dig.remove(int(t))
+                
+    index = random.randint(0, len(all_dig))
     _try+=1
     machine_guess(all_dig[index], _try, all_dig)
 
