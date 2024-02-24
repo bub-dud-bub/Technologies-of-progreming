@@ -224,7 +224,7 @@ def victory(_try, winner):
     layout = [
           [sg.Text(win, size=(30, 1))],
           [sg.Text("Число попыток: "+str(_try), size=(30, 1))],
-          [sg.Submit("Играть снова")]
+          [sg.Submit("Играть снова"), sg.Submit("Главное меню")]
          ]
     window = sg.Window("Demo", layout)
 
@@ -233,8 +233,18 @@ def victory(_try, winner):
         if event == sg.WIN_CLOSED:
             break
         if event == "Играть снова":
-            player_guess(3219, None, 1)
+            if winner == 'player':
+                player_guess(3219, None, 1)
+            elif winner == 'machine':
+                all_dig = []
+                for i in range(1000,10000):
+                    if (number_checker(str(i))==True):
+                        all_dig.append(i)
+                inex = random.randint(0, len(all_dig))
+                machine_guess(all_dig[inex], 1, all_dig)
         if event == "Главное меню":
+            window.close()
+            MainMenu()
             return 0
 
 
@@ -242,11 +252,11 @@ def machine_guess(inp, _try, all_dig):
     print(str(inp)+"\n")
     form = sg.FlexForm('Simple data entry form')
     layout = [
-          [sg.Text("Программа предложила число: "+str(inp), size=(50, 1))],
-          [sg.Text("Введите число быков:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='bull', size=(30, 6))],
-          [sg.Text("Введите число коров:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='cow', size=(30, 6))],
+          [sg.Text("Программа предложила число: "+str(inp), size=(50, 1), font='Any 16')],
+          [sg.Text("Введите число быков:", size=(30, 1), font='Any 12'), sg.Combo(['0', '1', '2', '3', '4'], default_value = '0', key='bull', size=(30, 6), font='Any 12')],
+          [sg.Text("Введите число коров:", size=(30, 1), font='Any 12'), sg.Combo(['0', '1', '2', '3', '4'], default_value = '0', key='cow', size=(30, 6), font='Any 12')],
           [sg.Text(str(len(all_dig)))],
-          [sg.Submit("Ок"), sg.Submit("Главное меню")]
+          [sg.Submit("Ок", font='Any 12'), sg.Submit("Главное меню", font='Any 12')]
          ]
     window = sg.Window("Demo", layout)
     while True:
@@ -266,8 +276,8 @@ def machine_guess_2(inp, _try, all_dig):
     form = sg.FlexForm('Simple data entry form')
     layout = [
           [sg.Text("Программа предложила число: "+str(inp), size=(50, 1), font='Any 16')],
-          [sg.Text("Введите число быков:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='bull', size=(30, 6), font='Any 12')],
-          [sg.Text("Введите число коров:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='cow', size=(30, 6), font='Any 12')],
+          [sg.Text("Введите число быков:", size=(30, 1), font='Any 12'), sg.Combo(['0', '1', '2', '3', '4'], default_value = '0', key='bull', size=(30, 6), font='Any 12')],
+          [sg.Text("Введите число коров:", size=(30, 1), font='Any 12'), sg.Combo(['0', '1', '2', '3', '4'], default_value = '0', key='cow', size=(30, 6), font='Any 12')],
           [sg.Text(str(len(all_dig)))],
           [sg.Submit("Ок", font='Any 12'), sg.Submit("Главное меню")]
          ]
@@ -284,39 +294,41 @@ def machine_guess_2(inp, _try, all_dig):
             window.close()
             break
 
+def MainMenu():
+    form = sg.FlexForm('Simple data entry form')
+    layout = [
+          [sg.Text("Выберите режим:", size=(30, 1), font='Any 16')],
+          [sg.Submit("Угадать число программы", font='Any 12'), sg.Submit("Загадать число программе", font='Any 12')]
+         ]
+    window = sg.Window("Demo", layout)
+    all_dig = []
+    for i in range(1000,10000):
+        if (number_checker(str(i))==True):
+            all_dig.append(i)
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+        if event == "Угадать число программы":
+            inex = random.randint(0, len(all_dig))
+            player_guess(all_dig[inex], None, 1)
+        if event == "Загадать число программе":
+            layout = [
+                  [sg.Text("Задумайте четырёхзначное число с неповторяющимися цифрами. Программа попытается угадать его.", size=(100, 1), font='Any 16')],
+                  [sg.Submit("Начать игру", font='Any 12')]
+                 ]
+            window = sg.Window("Demo", layout)
 
-form = sg.FlexForm('Simple data entry form')
-layout = [
-      [sg.Text("Выберите режим:", size=(30, 1), font='Any 16')],
-      [sg.Submit("Угадать число программы", font='Any 12'), sg.Submit("Загадать число программе", font='Any 12')]
-     ]
-window = sg.Window("Demo", layout)
-all_dig = []
-for i in range(1000,10000):
-    if (number_checker(str(i))==True):
-        all_dig.append(i)
-while True:
-    event, values = window.read()
-    if event == sg.WIN_CLOSED:
-        break
-    if event == "Угадать число программы":
-        inex = random.randint(0, len(all_dig))
-        player_guess(all_dig[inex], None, 1)
-    if event == "Загадать число программе":
-        layout = [
-              [sg.Text("Задумайте четырёхзначное число с неповторяющимися цифрами. Программа попытается угадать его.", size=(100, 1), font='Any 16')],
-              [sg.Submit("Начать игру", font='Any 12')]
-             ]
-        window = sg.Window("Demo", layout)
-
-        while True:
-            event, values = window.read()
-            if event == sg.WIN_CLOSED:
-                break
-            if event == "Начать игру":
-                window.close()
-                inex = random.randint(0, len(all_dig))
-                machine_guess(all_dig[inex], 1, all_dig)
-            if event == "Главное меню":
-                window.close()
-                break
+            while True:
+                event, values = window.read()
+                if event == sg.WIN_CLOSED:
+                    break
+                if event == "Начать игру":
+                    window.close()
+                    inex = random.randint(0, len(all_dig))
+                    machine_guess(all_dig[inex], 1, all_dig)
+                    break
+                if event == "Главное меню":
+                    window.close()
+                    break
+MainMenu()
