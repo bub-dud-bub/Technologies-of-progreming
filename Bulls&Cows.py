@@ -12,7 +12,7 @@ def number_checker(inp):
 def player_guess(goal, inp, _try):
     form = sg.FlexForm('Simple data entry form')
     layout = [
-          [sg.Text("Задумано четырёхзначное число:"+str(goal), size=(40, 1))],
+          [sg.Text("Задумано четырёхзначное число:", size=(40, 1))],
           [sg.Text("Угадай число:", size=(10, 1)), sg.InputText('', key='inp')],
           [sg.Submit("Ок"), sg.Submit("Главное меню")]
          ]
