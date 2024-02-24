@@ -56,7 +56,7 @@ def player_guess(goal, inp, _try):
     player_guess(goal, int(values['inp']), _try)
 
 
-def machine_think(inp, _try, cow, bull, all_dig):
+def farm(inp, _try, bull, cow, all_dig):
     new = []
     if bull == 4:
         winner = 'machine'
@@ -127,16 +127,20 @@ def machine_think(inp, _try, cow, bull, all_dig):
         new.remove(int(inp))
     if len(new)==0:
         new = all_dig
+    return new
 
+def machine_think(inp, _try, cow, bull, all_dig):
 
+    new = farm(inp, _try, bull, cow, all_dig)
+    _try+=1
     inp = int(inp)
     per = 1
     pos = 3
     while per <= 1000:
-        an_inp = inp + per
+        an_inp = inp
         stop = 0
         while True:
-            if an_inp > inp:
+            if an_inp >= inp:
                 an_inp+=per
             elif an_inp < inp:
                 an_inp-=per
@@ -164,6 +168,7 @@ def machine_think(inp, _try, cow, bull, all_dig):
             inp = an_inp
             continue
         an_inp, an_bull, an_cow = machine_guess_2(an_inp, _try, new)
+        new = farm(str(an_inp), _try, an_bull, an_cow, new)
         if int(an_inp) in new:
             new.remove(int(an_inp))
         _try+=1
@@ -208,7 +213,6 @@ def machine_think(inp, _try, cow, bull, all_dig):
 
 
     inex = random.randint(0, len(new)-1)
-    _try+=1
     machine_guess(new[inex], _try, new)
 
 def victory(_try, winner):
@@ -261,11 +265,11 @@ def machine_guess_2(inp, _try, all_dig):
     print(str(inp)+"\n")
     form = sg.FlexForm('Simple data entry form')
     layout = [
-          [sg.Text("Программа предложила число: "+str(inp), size=(50, 1))],
-          [sg.Text("Введите число быков:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='bull', size=(30, 6))],
-          [sg.Text("Введите число коров:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='cow', size=(30, 6))],
+          [sg.Text("Программа предложила число: "+str(inp), size=(50, 1), font='Any 16')],
+          [sg.Text("Введите число быков:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='bull', size=(30, 6), font='Any 12')],
+          [sg.Text("Введите число коров:", size=(30, 1)), sg.Combo(['0', '1', '2', '3'], default_value = '0', key='cow', size=(30, 6), font='Any 12')],
           [sg.Text(str(len(all_dig)))],
-          [sg.Submit("Ок"), sg.Submit("Главное меню")]
+          [sg.Submit("Ок", font='Any 12'), sg.Submit("Главное меню")]
          ]
     window = sg.Window("Demo", layout)
     while True:
@@ -283,8 +287,8 @@ def machine_guess_2(inp, _try, all_dig):
 
 form = sg.FlexForm('Simple data entry form')
 layout = [
-      [sg.Text("Выберите режим:", size=(30, 1))],
-      [sg.Submit("Угадать число программы"), sg.Submit("Загадать число программе")]
+      [sg.Text("Выберите режим:", size=(30, 1), font='Any 16')],
+      [sg.Submit("Угадать число программы", font='Any 12'), sg.Submit("Загадать число программе", font='Any 12')]
      ]
 window = sg.Window("Demo", layout)
 all_dig = []
@@ -300,8 +304,8 @@ while True:
         player_guess(all_dig[inex], None, 1)
     if event == "Загадать число программе":
         layout = [
-              [sg.Text("Задумайте четырёхзначное число с неповторяющимися цифрами. Программа попытается угадать его.", size=(100, 1))],
-              [sg.Submit("Начать игру")]
+              [sg.Text("Задумайте четырёхзначное число с неповторяющимися цифрами. Программа попытается угадать его.", size=(100, 1), font='Any 16')],
+              [sg.Submit("Начать игру", font='Any 12')]
              ]
         window = sg.Window("Demo", layout)
 
