@@ -3,11 +3,15 @@ import wx
 import time
 x = [0, 100, 200]
 y = [0, 100, 0]
+i = 15
+turtle.tracer(0)
 turtle.pendown()
+turtle.hideturtle()
 turtle.goto(100,100)
 turtle.goto(200,0)
-turtle.speed(0)
-for i in range(10):
+turtle.speed("fastest")
+def loop(i, x, y):
+    if i==0: return
     turtle.clear()
     n = 0
     p = 1
@@ -38,10 +42,14 @@ for i in range(10):
             y.insert(n+1, y[n])
         n+=2
         p+=2
-    turtle.penup()
-    for c in range(len(x)):
-        turtle.goto(x[c], y[c])
-        if c==0:
-            turtle.pendown()
-    i+=1
-turtle.exitonclick()
+    i-=1
+    loop(i, x, y)
+loop(i, x, y)
+turtle.penup()
+for c in range(len(x)):
+    turtle.goto(x[c], y[c])
+    if c==0:
+        turtle.pendown()
+
+turtle.update()
+turtle.mainloop()
