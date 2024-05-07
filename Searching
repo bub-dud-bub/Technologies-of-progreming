@@ -1,0 +1,38 @@
+with open('cat.fa') as file:
+    pat = 'CAT'
+    count=0
+    b_line = ''
+    for line in file:
+        b_line+=line
+        if (line[-3:]=='СAT' or line[-2:]=='CA' or line[-1]=='C'):
+            continue
+        i=0
+        while i<(len(b_line)):
+            if (b_line[i:i+3]=='CAT' and i>=len(pat)):
+                if (b_line[i-len(pat):i]==pat):
+                    pat+='CAT'
+                    count=1
+                i+=3
+            elif (b_line[i:i+(len(pat))]==pat):
+                i+=len(pat)
+                count+=1
+            elif (i+2<len(b_line)):
+                if b_line[i+2]=='C': i+=2
+                elif b_line[i+2]=='A': i+=1
+                else: i+=3
+            else: break
+        b_line=''
+print(count)
+print(pat)
+with open('cat.fa') as file:
+    count=0
+    b_line = ''
+    for line in file:
+        b_line+=line
+        count+=1
+        if (line[-3:]=='СAT' or line[-2:]=='CA' or line[-1]=='C'):
+            continue
+        if pat in b_line:
+            print(count)
+        b_line=''
+print('end')
