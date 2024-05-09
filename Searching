@@ -1,3 +1,5 @@
+import time
+tic = time.perf_counter()
 with open('cat.fa') as file:
     pat = 'CAT'
     count=0
@@ -12,18 +14,21 @@ with open('cat.fa') as file:
                 if (b_line[i-len(pat):i]==pat):
                     pat+='CAT'
                     count=1
-                i+=3
-            elif (b_line[i:i+(len(pat))]==pat):
-                i+=len(pat)
+            #     i+=3        #БМХ
+            # elif (b_line[i:i+(len(pat))]==pat):
+            #     i+=len(pat)
+            #     count+=1
+            # elif (i+2<len(b_line)):
+            #     if b_line[i+2]=='C': i+=2
+            #     elif b_line[i+2]=='A': i+=1
+            #     else: i+=3
+            # else: break     #БМХ
+            elif (b_line[i:i+(len(pat))]==pat):     #НА
                 count+=1
-            elif (i+2<len(b_line)):
-                if b_line[i+2]=='C': i+=2
-                elif b_line[i+2]=='A': i+=1
-                else: i+=3
-            else: break
+            i+=1      #НА
         b_line=''
-print(count)
-print(pat)
+print('Самая длинная последовательность: '+str(pat))
+print('Встречается '+str(count)+" раз в строках:")
 with open('cat.fa') as file:
     count=0
     b_line = ''
@@ -35,4 +40,4 @@ with open('cat.fa') as file:
         if pat in b_line:
             print(count)
         b_line=''
-print('end')
+print("Время вычисления: "+str(round(time.perf_counter()-tic, 4))+" секунд")
